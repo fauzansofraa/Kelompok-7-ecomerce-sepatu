@@ -1,18 +1,18 @@
-FROM php:8.3-apache
+FROM dunglas/frankenphp:1-php8.3
 
-# Aktifkan Apache rewrite
-RUN a2enmod rewrite
+WORKDIR /app
 
-# Install extension MySQL
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN install-php-extensions \
+    pdo_mysql \
+    mysqli \
+    curl \
+    mbstring \
+    openssl
 
-# Copy semua project
-COPY . /var/www/html/
+COPY . /app
 
-# Permission
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /app
 
-# Vercel menggunakan port 80 sebagai default container HTTP
+ENV SERVER_NAME=:80
+
 EXPOSE 80
-
-CMD ["apache2-foreground"]

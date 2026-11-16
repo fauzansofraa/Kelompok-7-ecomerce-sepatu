@@ -6,13 +6,13 @@ RUN install-php-extensions \
     pdo_mysql \
     mysqli \
     curl \
-    mbstring \
-    openssl
+    mbstring
 
 COPY . /app
 
-RUN chown -R www-data:www-data /app
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 ENV SERVER_NAME=:80
+ENV SERVER_ROOT=/app
 
 EXPOSE 80

@@ -1,0 +1,18 @@
+FROM php:8.3-apache
+
+# Aktifkan Apache rewrite
+RUN a2enmod rewrite
+
+# Install extension MySQL
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+# Copy semua project
+COPY . /var/www/html/
+
+# Permission
+RUN chown -R www-data:www-data /var/www/html
+
+# Vercel menggunakan port 80 sebagai default container HTTP
+EXPOSE 80
+
+CMD ["apache2-foreground"]
